@@ -52,7 +52,9 @@ class Entity(dict):
             if not isinstance(identifier, str):
                 raise TypeError('identifier should be a string {}'.format(identifier))
             if not identifier:
-                raise ValueError('identifier shold be non-empty')
+                raise ValueError('identifier should be non-empty')
+            if ' ' in identifier:
+                raise ValueError('identifier should not have spaces: {}'.format(identifier))
             self[IDENTIFIER] = identifier
 
     @property
