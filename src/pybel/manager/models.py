@@ -314,9 +314,9 @@ class Node(Base):
     __tablename__ = NODE_TABLE_NAME
     id = Column(Integer, primary_key=True)
 
-    type = Column(String(255), nullable=False, doc='The type of the represented biological entity e.g. Protein or Gene')
-    bel = Column(String(255), nullable=False, doc='Canonical BEL term that represents the given node')
-    md5 = Column(String(255), nullable=False, index=True)
+    type = Column(String(32), nullable=False, doc='The type of the represented biological entity e.g. Protein or Gene')
+    bel = Column(String(1023), nullable=False, doc='Canonical BEL term that represents the given node')
+    md5 = Column(String(255), nullable=False, unique=True, index=True)
 
     namespace_entry_id = Column(Integer, ForeignKey('{}.id'.format(NAME_TABLE_NAME)), nullable=True)
     namespace_entry = relationship(NamespaceEntry, foreign_keys=[namespace_entry_id],
@@ -532,7 +532,7 @@ class Edge(Base):
     id = Column(Integer, primary_key=True)
 
     bel = Column(Text, nullable=False, doc='Valid BEL statement that represents the given edge')
-    relation = Column(String(255), nullable=False)
+    relation = Column(String(32), nullable=False)
 
     source_id = Column(Integer, ForeignKey('{}.id'.format(NODE_TABLE_NAME)), nullable=False)
     source = relationship(
@@ -559,7 +559,7 @@ class Edge(Base):
     source_modifier = Column(JSON, nullable=True, doc='Modifiers for the source of the edge')
     target_modifier = Column(JSON, nullable=True, doc='Modifiers for the target of the edge')
 
-    md5 = Column(String(255), index=True, doc='The hash of the source, target, and associated metadata')
+    md5 = Column(String(255), index=True, unique=True, doc='The hash of the source, target, and associated metadata')
 
     data = Column(JSON, nullable=False, doc='The stringified JSON representing this edge')
 
